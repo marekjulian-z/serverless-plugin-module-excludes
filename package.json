@@ -1,0 +1,19 @@
+{
+  "name": "serverless-plugin-module-excludes",
+  "version": "0.1.0",
+  "description": "Serverless plugin used to exclude unused node modules from the deployment artifact",
+  "main": "index.js",
+  "engines": {
+    "node": ">=8.11"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "madge": "^3.2.0",
+    "npm": "^6.4.1"
+  }
+}
