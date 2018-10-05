@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const fs = require('fs')
 const madge = require('madge');
 const npm = require('npm');
@@ -25,6 +26,10 @@ module.exports = class ServerlessPlugin {
       const fn = service.functions[fnNames[i]]
       const entry = `./${fn.handler.split('.')[0]}.js`
       const deps = await getExternalDependencies(entry)
+      const include = _.get(service.custom, 'serverless-plugin-module-excludes.include', [])
+
+      deps.push(...include)
+
       const locations = deps.reduce((acc, dep) => ({...acc, [dep]: true}), {})
       const exclude = fs.readdirSync('./node_modules').filter(dirname => !(dirname in locations))
       const globs = exclude.map(location => `node_modules/${location}/**`)
