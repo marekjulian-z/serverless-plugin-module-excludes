@@ -25,11 +25,8 @@ module.exports = class ServerlessPlugin {
     for (let i=0; i < fnNames.length; i++) {
       const fn = service.functions[fnNames[i]]
       const entry = `./${fn.handler.split('.')[0]}.js`
-      const deps = await getExternalDependencies(entry)
       const include = _.get(service.custom, 'serverless-plugin-module-excludes.include', [])
-
-      deps.push(...include)
-
+      const deps = await getExternalDependencies(entry, include)
       const locations = deps.reduce((acc, dep) => ({...acc, [dep]: true}), {})
       const exclude = fs.readdirSync('./node_modules').filter(dirname => !(dirname in locations))
       const globs = exclude.map(location => `node_modules/${location}/**`)
@@ -40,7 +37,7 @@ module.exports = class ServerlessPlugin {
   }
 };
 
-async function getExternalDependencies(entry) {
+async function getExternalDependencies(entry, include=[]) {
   const dependencies = await madge(entry, {includeNpm: true}).then((res) => {
     return Object.keys(res.obj())
       .map(filename => Object.values(res.obj()[filename]))
@@ -54,7 +51,7 @@ async function getExternalDependencies(entry) {
 
   const newPackage = {
     ...package,
-    dependencies: dependencies.reduce((acc, dep) => {
+    dependencies: dependencies.concat(include).reduce((acc, dep) => {
       if (dep in package.dependencies) {
         acc[dep] = package.dependencies[dep]
       }
