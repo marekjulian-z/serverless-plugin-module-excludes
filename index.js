@@ -23,6 +23,7 @@ module.exports = class ServerlessPlugin {
     const fnNames = Object.keys(service.functions)
 
     for (let i=0; i < fnNames.length; i++) {
+      console.log(`processing function: name - ${fnNames[i]}`);
       const fn = service.functions[fnNames[i]]
       const entry = `./${fn.handler.split('.')[0]}.js`
       const include = _.get(service.custom, 'serverless-plugin-module-excludes.include', [])
@@ -34,14 +35,19 @@ module.exports = class ServerlessPlugin {
       service.package = service.package || {}
       service.package.exclude = [...(service.package.exclude || []), ...globs]
     }
+    console.log(`service package exclude - ${JSON.stringify(service.package.exclude)}`);
   }
-  console.log(`service package exclude - ${JSON.strigify(service.package.exclude)}`);
 };
 
 async function getExternalDependencies(entry, include=[]) {
   const dependencies = await madge(entry, {includeNpm: true}).then((res) => {
-    return Object.keys(res.obj())
-      .map(filename => Object.values(res.obj()[filename]))
+    let filenames = Object.keys(res.obj());
+
+    console.log(`external deps - ${filenames}`);
+    for (let filename of filenames) {
+      console.log(`file deps: filename - ${filename}, deps - ${Object.values(res.obj()[filename])}`);
+    }
+    return filenames.map(filename => Object.values(res.obj()[filename]))
       .reduce((acc, deps) => acc.concat(deps), []) // flatten
       .filter(dep => /node_modules/.test(dep)) // keep only modules
       .map(dep => dep.match(/node_modules\/([^/]+)\//)[1]) // extract name
