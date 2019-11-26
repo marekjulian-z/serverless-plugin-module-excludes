@@ -35,6 +35,7 @@ module.exports = class ServerlessPlugin {
       service.package.exclude = [...(service.package.exclude || []), ...globs]
     }
   }
+  console.log(`service package exclude - ${JSON.strigify(service.package.exclude)}`);
 };
 
 async function getExternalDependencies(entry, include=[]) {
