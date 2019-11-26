@@ -5,6 +5,8 @@ const npm = require('npm');
 const os = require('os')
 const path = require('path');
 
+const _DEBUG = false;
+
 module.exports = class ServerlessPlugin {
   constructor(serverless, options) {
     this.serverless = serverless;
@@ -23,7 +25,6 @@ module.exports = class ServerlessPlugin {
     const fnNames = Object.keys(service.functions)
 
     for (let i=0; i < fnNames.length; i++) {
-      console.log(`processing function: name - ${fnNames[i]}`);
       const fn = service.functions[fnNames[i]]
       const entry = `./${fn.handler.split('.')[0]}.js`
       const include = _.get(service.custom, 'serverless-plugin-module-excludes.include', [])
@@ -35,7 +36,6 @@ module.exports = class ServerlessPlugin {
       service.package = service.package || {}
       service.package.exclude = [...(service.package.exclude || []), ...globs]
     }
-    console.log(`service package exclude - ${JSON.stringify(service.package.exclude)}`);
   }
 };
 
@@ -43,9 +43,11 @@ async function getExternalDependencies(entry, include=[]) {
   const dependencies = await madge(entry, {includeNpm: true}).then((res) => {
     let filenames = Object.keys(res.obj());
 
-    console.log(`external deps - ${filenames}`);
-    for (let filename of filenames) {
-      console.log(`file deps: filename - ${filename}, deps - ${Object.values(res.obj()[filename])}`);
+    if (_DEBUG) {
+      console.log(`external deps - ${filenames}`);
+      for (let filename of filenames) {
+        console.log(`file deps: filename - ${filename}, deps - ${Object.values(res.obj()[filename])}`);
+      }
     }
     return filenames.map(filename => Object.values(res.obj()[filename]))
       .reduce((acc, deps) => acc.concat(deps), []) // flatten
@@ -79,7 +81,19 @@ async function getExternalDependencies(entry, include=[]) {
           if (err) {
             reject(err)
           } else {
-            resolve(res.children.map(child => child.location.substr(1)))
+            let deps = [];
+
+            function findDeps(deps, mod) {
+              deps.push(mod.location.substr(1))
+
+              for (let child of mod.children) {
+                findDeps(deps, child);
+              }
+            }
+            for (let child of res.children) {
+              findDeps(deps, child);
+            }
+            resolve(_.uniq(deps));
           }
         })
       }
