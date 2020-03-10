@@ -184,7 +184,23 @@
           "integrity": "sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ=="
         },
         "precinct": {
-          "version": "marekjulian-z/node-precinct#ef9355f3fdb6149ff3fb28e7936a27ea99b0526e"
+          "version": "6.2.0",
+          "resolved": "marekjulian-z/node-precinct#ef9355f3fdb6149ff3fb28e7936a27ea99b0526e",
+          "requires": {
+            "commander": "^2.19.0",
+            "debug": "^4.1.1",
+            "detective-amd": "^3.0.0",
+            "detective-cjs": "^3.1.1",
+            "detective-es6": "^2.0.0",
+            "detective-less": "^1.0.2",
+            "detective-postcss": "^3.0.0",
+            "detective-sass": "^3.0.0",
+            "detective-scss": "^2.0.0",
+            "detective-stylus": "^1.0.0",
+            "detective-typescript": "^5.1.1",
+            "module-definition": "^3.3.0",
+            "node-source-walk": "^4.2.0"
+          }
         }
       }
     },
@@ -3929,33 +3945,6 @@
         "flatten": "^1.0.2",
         "indexes-of": "^1.0.1",
         "uniq": "^1.0.1"
-      }
-    },
-    "precinct": {
-      "version": "6.2.0",
-      "resolved": "https://registry.npmjs.org/precinct/-/precinct-6.2.0.tgz",
-      "integrity": "sha512-BCAmnOxZzobF3H1/h/gq70pEyvX/BVLWCrzi8beFD22dqu5Z14qOghNUsI24Wg8oaTsGFcIjOGtFX5L9ttmjVg==",
-      "requires": {
-        "commander": "^2.19.0",
-        "debug": "^4.1.1",
-        "detective-amd": "^3.0.0",
-        "detective-cjs": "^3.1.1",
-        "detective-es6": "^2.0.0",
-        "detective-less": "^1.0.2",
-        "detective-postcss": "^3.0.0",
-        "detective-sass": "^3.0.0",
-        "detective-scss": "^2.0.0",
-        "detective-stylus": "^1.0.0",
-        "detective-typescript": "^5.1.1",
-        "module-definition": "^3.3.0",
-        "node-source-walk": "^4.2.0"
-      },
-      "dependencies": {
-        "commander": {
-          "version": "2.20.3",
-          "resolved": "https://registry.npmjs.org/commander/-/commander-2.20.3.tgz",
-          "integrity": "sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ=="
-        }
       }
     },
     "prelude-ls": {
