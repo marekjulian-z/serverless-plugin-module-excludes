@@ -5,7 +5,7 @@ const npm = require('npm');
 const os = require('os')
 const path = require('path');
 
-const _DEBUG = false;
+const _DEBUG = true;
 
 module.exports = class ServerlessPlugin {
   constructor(serverless, options) {
